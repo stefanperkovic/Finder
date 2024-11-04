@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Finder
  * A puzzle written by Zach Blick
@@ -14,6 +16,7 @@ public class Finder {
     private static final String INVALID = "INVALID KEY";
     private static final int p = 249998741;
     private static final int radix = 256;
+    private static final int TABLE_SIZE = 100000;
 
 
     public Finder() {}
@@ -52,14 +55,18 @@ public class Finder {
         // TODO: Complete the buildTable() function!
         String text = br.readLine();
         String current_line[];
-        String array[];
+        ArrayList<Pair>[] table;
+        table = new ArrayList[TABLE_SIZE];
+        for (int i = 0; i < TABLE_SIZE; i++) {
+            table[i] = new ArrayList<>();
+        }
         while (text != null){
             current_line = text.split(",");
             String key = current_line[keyCol];
             String value = current_line[valCol];
             Pair pair = new Pair(key, value);
-
-
+            int index = pair.getHashValue() % TABLE_SIZE;
+            table[index].add(pair);
 
         }
 
