@@ -15,26 +15,35 @@ public class Finder {
     private static final int p = 249998741;
     private static final int radix = 256;
 
+
     public Finder() {}
 
 
-    public class Pair(){
+    public class Pair{
+        private String key;
+        private String value;
+        private int hashValue;
 
-
-
-
-
-    }
-
-    // Calculates the hash for the key
-    private static int hash(String key) {
-        int hash = 0;
-        for (int i = 0; i < key.length(); i++) {
-            hash = (hash * radix + key.charAt(i)) % p;
+        // Constructor to initialize key, value, and hashValue
+        public Pair(String key, String value) {
+            this.key = key;
+            this.value = value;
+            this.hashValue = hash(key);
         }
-        return hash;
-    }
 
+        // Calculates the hash for the key
+        private int hash(String key) {
+            int hash = 0;
+            for (int i = 0; i < key.length(); i++) {
+                hash = (hash * radix + key.charAt(i)) % p;
+            }
+            return hash;
+        }
+
+        public int getHashValue() {
+            return hashValue;
+        }
+    }
 
 
 
@@ -48,11 +57,11 @@ public class Finder {
             current_line = text.split(",");
             String key = current_line[keyCol];
             String value = current_line[valCol];
-            int hash = hash(key);
+            Pair pair = new Pair(key, value);
+
 
 
         }
-
 
 
         br.close();
