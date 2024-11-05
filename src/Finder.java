@@ -22,16 +22,20 @@ public class Finder {
     public Finder() {}
 
 
-    public class Pair{
-        private String key;
-        private String value;
-        private int hashValue;
+    private class HashMap{
+        private int DEFAULT_TABLE_SIZE = 1000000;
+        private int tableSize;
+        private int n;
+        private String[] keys;
+        private String[] values;
+        private String[] map;
 
-        // Constructor to initialize key, value, and hashValue
-        public Pair(String key, String value) {
-            this.key = key;
-            this.value = value;
-            this.hashValue = hash(key);
+        public HashMap(int tableSize, int n, String[] keys, String[] values) {
+            this.tableSize = tableSize;
+            this.n = 0;
+            this.keys = keys;
+            this.values = values;
+            this.map = new String[DEFAULT_TABLE_SIZE];
         }
 
         // Calculates the hash for the key
@@ -43,9 +47,25 @@ public class Finder {
             return hash;
         }
 
-        public int getHashValue() {
-            return hashValue;
+        void add(String key, String value){
+            if (n / tableSize > 0.5){
+                resize();
+            }
+
+
+
+
         }
+        String get(String key){
+
+
+
+        }
+        void resize(){
+
+
+        }
+
     }
 
 
@@ -54,8 +74,8 @@ public class Finder {
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         // TODO: Complete the buildTable() function!
         String text = br.readLine();
-        String current_line[];
-        ArrayList<Pair>[] table;
+        String[] current_line;
+        HashMap map = new HashMap();
         table = new ArrayList[TABLE_SIZE];
         for (int i = 0; i < TABLE_SIZE; i++) {
             table[i] = new ArrayList<>();
@@ -64,9 +84,7 @@ public class Finder {
             current_line = text.split(",");
             String key = current_line[keyCol];
             String value = current_line[valCol];
-            Pair pair = new Pair(key, value);
-            int index = pair.getHashValue() % TABLE_SIZE;
-            table[index].add(pair);
+
 
         }
 
