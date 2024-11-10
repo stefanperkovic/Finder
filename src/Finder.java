@@ -18,24 +18,24 @@ public class Finder {
     private static final int radix = 256;
     private static final int TABLE_SIZE = 100000;
 
+    private HashMap map;
 
-    public Finder() {}
+    public Finder() {
+        this.map = new HashMap(TABLE_SIZE);
+    }
 
 
     private class HashMap{
-        private int DEFAULT_TABLE_SIZE = 1000000;
         private int tableSize;
         private int n;
         private String[] keys;
         private String[] values;
-        private String[] map;
 
-        public HashMap(int tableSize, int n, String[] keys, String[] values) {
+        public HashMap(int tableSize) {
             this.tableSize = tableSize;
             this.n = 0;
-            this.keys = keys;
-            this.values = values;
-            this.map = new String[DEFAULT_TABLE_SIZE];
+            this.keys = new String[tableSize];
+            this.values = new String[tableSize];
         }
 
         // Calculates the hash for the key
@@ -57,8 +57,14 @@ public class Finder {
 
         }
         String get(String key){
-
-
+            int index = hash(key);
+            while (keys[index] != null){
+                if (keys[index].equals(key)){
+                    return values[index];
+                }
+                index = (index + 1) % tableSize;
+            }
+            return INVALID;
 
         }
         void resize(){
@@ -72,22 +78,15 @@ public class Finder {
 
 
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
-        // TODO: Complete the buildTable() function!
-        String text = br.readLine();
+        String line = br.readLine();
         String[] current_line;
-        HashMap map = new HashMap();
-        table = new ArrayList[TABLE_SIZE];
-        for (int i = 0; i < TABLE_SIZE; i++) {
-            table[i] = new ArrayList<>();
-        }
-        while (text != null){
-            current_line = text.split(",");
+        while (line != null){
+            current_line = line.split(",");
             String key = current_line[keyCol];
             String value = current_line[valCol];
-
-
+            map.add(key, value);
+            line = br.readLine();
         }
-
 
         br.close();
     }
