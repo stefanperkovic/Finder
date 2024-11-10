@@ -1,3 +1,5 @@
+import org.hamcrest.Condition;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,13 +50,20 @@ public class Finder {
         }
 
         void add(String key, String value){
-            if (n / tableSize > 0.5){
+            // Check load factor and resize if necessary
+            if ((double)n / tableSize > 0.5){
                 resize();
             }
 
+            int index = hash(key);
+            // Loops through all occupied spots
+            while (keys[index] != null){
+                index = (index + 1) % tableSize;
+            }
 
-
-
+            keys[index] = key;
+            values[index] = value;
+            n++;
         }
         String get(String key){
             int index = hash(key);
@@ -68,7 +77,17 @@ public class Finder {
 
         }
         void resize(){
+            tableSize *= 2;
+            String[] oldKeys = keys;
+            String[] oldValues = values;
 
+            keys = new String[tableSize];
+            values = new String[tableSize];
+            n = 0;
+
+            for (int i = 0; i < oldKeys.length; i++){
+                add(oldKeys[i], oldValues[i]);
+            }
 
         }
 
