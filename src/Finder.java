@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
-    private static final int p = 249998741;
+    private static final int p = 131071;
     private static final int radix = 256;
     private static final int TABLE_SIZE = 100000;
 
@@ -25,7 +25,6 @@ public class Finder {
     public Finder() {
         this.map = new HashMap(TABLE_SIZE);
     }
-
 
     private class HashMap{
         private int tableSize;
@@ -46,7 +45,7 @@ public class Finder {
             for (int i = 0; i < key.length(); i++) {
                 hash = (hash * radix + key.charAt(i)) % p;
             }
-            return hash;
+            return hash % tableSize;
         }
 
         void add(String key, String value){
@@ -86,7 +85,9 @@ public class Finder {
             n = 0;
 
             for (int i = 0; i < oldKeys.length; i++){
-                add(oldKeys[i], oldValues[i]);
+                if (oldKeys[i] != null){
+                    add(oldKeys[i], oldValues[i]);
+                }
             }
 
         }
@@ -111,7 +112,6 @@ public class Finder {
     }
 
     public String query(String key){
-        // TODO: Complete the query() function!
-        return INVALID;
+        return map.get(key);
     }
 }
